@@ -499,7 +499,7 @@ int main( int argc, char* argv[] )
   converter.write("converter");
 
   // === 2nd Step: Prepare Geometry ===
-  STLreader<T> stlReader( "../bifurcation3d.stl", converter.getConversionFactorLength() );
+  STLreader<T> stlReader( "bifurcation3d.stl", converter.getConversionFactorLength() );
   IndicatorLayer3D<T> extendedDomain( stlReader,
                                       converter.getConversionFactorLength() );
 

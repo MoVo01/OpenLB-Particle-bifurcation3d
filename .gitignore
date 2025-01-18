@@ -2,3 +2,4 @@ bifurcation3d.d
 Makefile
 bifurcation3d
 bifurcation3d.o
+tmp/*
