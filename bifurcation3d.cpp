@@ -62,19 +62,21 @@ typedef SubgridParticle3D PARTICLETYPE;
 
 const T Re = 50;                    // Reynolds number
 int N = 19;                         // resolution of the model
-const T radius = 1.5e-4;            // particles radius
+const T radius = 1.5e-3;                  // particles radius
 const T partRho = 998.2;            // particles density
 
-const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit
-const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI unit
+const T fluidMaxPhysT = T( 10 );     // max. fluid simulation time in s, SI unit
+const T particleMaxPhysT = T( 40 ); // max. particle simulation time in s, SI unit
 
 std::size_t noOfParticles = 1000;   // total number of inserted particles
+
 
 //Set capture method:
 // materialCapture: based on material number
 // wallCapture:     based on more accurate stl description
-typedef enum {materialCapture, wallCapture} ParticleDynamicsSetup;
-const ParticleDynamicsSetup particleDynamicsSetup = wallCapture;
+typedef enum {materialCapture, wallCapture, velocityWallReflection} ParticleDynamicsSetup;
+//const ParticleDynamicsSetup particleDynamicsSetup = wallCapture;
+const ParticleDynamicsSetup particleDynamicsSetup = velocityWallReflection;// reflection instead of capture
 
 // center of inflow and outflow regions [m]
 Vector<T, 3> inletCenter( T(), T(), 0.0786395 );
@@ -262,6 +264,10 @@ void prepareParticles( UnitConverter<T,DESCRIPTOR> const& converter,
     superParticleSystem.defineDynamics<
       VerletParticleDynamicsMaterialAwareWallCaptureAndEscape<T,PARTICLETYPE>>(
         wall, wallMaterialIndicator, outletMaterialIndicator);
+  } else if (particleDynamicsSetup == velocityWallReflection) {
+    // Create verlet dynamics with velocity wall reflection
+    superParticleSystem.defineDynamics<
+      VerletParticleDynamicsVelocityWallReflection<T,PARTICLETYPE>>(wall);
   } else {
     //Create verlet dynamics with material capture
     superParticleSystem.defineDynamics<
@@ -456,7 +462,6 @@ int main( int argc, char* argv[] )
 
   olbInit( &argc, &argv );
 
-  singleton::directories().setOutputDir( "./tmp/" );
   OstreamManager clout( std::cout, "main" );
 
   //Create randomizer
@@ -469,7 +474,7 @@ int main( int argc, char* argv[] )
   if (argc>1) {
     if (argv[1][0]=='-' && argv[1][1]=='h') {
       OstreamManager clout( std::cout,"help" );
-      clout << std::endl << "Optional arguments: [N] [noP]" << std::endl;
+      clout << std::endl << "Optional arguments: [N] [noP] [Pradius]" << std::endl;
       return 0;
     }
     N = atoi(argv[1]);
@@ -483,6 +488,9 @@ int main( int argc, char* argv[] )
     std::cerr << "ERROR: too many arguments!" << std::endl;
     return 1;
   }
+
+  // Set output directory
+  singleton::directories().setOutputDir( "./res_N"+std::to_string(N)+"/" );
 
   // Creat unit converter
   UnitConverterFromResolutionAndRelaxationTime<T,DESCRIPTOR> const converter(
@@ -581,7 +589,7 @@ int main( int argc, char* argv[] )
     fluidTimer.printSummary();
 
     superLattice.communicate();
-    // calculated results are written in a file
+    // calculated results are written in a file;
     superLattice.save( "fluidSolution_N"+std::to_string(N) );
   }
 

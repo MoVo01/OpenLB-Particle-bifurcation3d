@@ -3,3 +3,5 @@ Makefile
 bifurcation3d
 bifurcation3d.o
 tmp/*
+.vscode/*
+res*
