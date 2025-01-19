@@ -60,22 +60,22 @@ typedef SubgridParticle3D PARTICLETYPE;
 #define M_PI 3.14159265358979323846
 #endif
 
-const T Re = 50;                    // Reynolds number
-int N = 19;                         // resolution of the model
-const T radius = 1.5e-3;                  // particles radius
-const T partRho = 998.2;            // particles density
+const T Re = 12;                    // Reynolds number (50)
 
-const T fluidMaxPhysT = T( 10 );     // max. fluid simulation time in s, SI unit
-const T particleMaxPhysT = T( 40 ); // max. particle simulation time in s, SI unit
+int N = 75;                         // resolution of the model (19)
+const T radius = 1.5e-3;           // particles radius (1.5e-3)
+const T partRho = 1e3;           // particles density (998.2)
 
-std::size_t noOfParticles = 1000;   // total number of inserted particles
+std::size_t noOfParticles = 250;   // total number of inserted particles (1000)
 
+const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit (5)
+const T particleMaxPhysT = T( 40 ); // max. particle simulation time in s, SI unit (20)
 
 //Set capture method:
 // materialCapture: based on material number
 // wallCapture:     based on more accurate stl description
 typedef enum {materialCapture, wallCapture, velocityWallReflection} ParticleDynamicsSetup;
-//const ParticleDynamicsSetup particleDynamicsSetup = wallCapture;
+// const ParticleDynamicsSetup particleDynamicsSetup = wallCapture;
 const ParticleDynamicsSetup particleDynamicsSetup = velocityWallReflection;// reflection instead of capture
 
 // center of inflow and outflow regions [m]
