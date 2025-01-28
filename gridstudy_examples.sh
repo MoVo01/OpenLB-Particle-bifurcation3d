@@ -4,45 +4,23 @@
 
 N=20
 if [ -d "res_N20" ]; then rm -r res_N${N}; fi
+if [ ! -f times.txt ]; then 
+    touch times.txt
+else 
+    echo "" >> times.txt
+    echo "--- new run ---" >> times.txt
+fi
 
 
-p=10
-make clean
-make
-mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
-mv res_N${N} res_N${N}_P${p}
-mkdir res_N${N}_P${p}/animations
-
-p=50
-make clean
-make
-mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
-mv res_N${N} res_N${N}_P${p}
-mkdir res_N${N}_P${p}/animations
-
-p=250
-make clean
-make
-mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
-mv res_N${N} res_N${N}_P${p}
-mkdir res_N${N}_P${p}/animations
-
-p=1500
-make clean
-make
-mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
-mv res_N${N} res_N${N}_P${p}
-mkdir res_N${N}_P${p}/animations
-
-p=6000
-make clean
-make
-mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
-mv res_N${N} res_N${N}_P${p}
-mkdir res_N${N}_P${p}/animations
-
-
-
+for p in 10 50 250 1500 6000; do
+    echo "N: ${N}, P: ${p}, Time: $(date)" 
+    echo "N: ${N}, P: ${p}, Time: $(date)" >> times.txt
+    make clean
+    make
+    mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
+    mv res_N${N} res_N${N}_P${p}
+    mkdir res_N${N}_P${p}/animations
+done
 
 
 
