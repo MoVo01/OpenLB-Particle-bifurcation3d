@@ -6,21 +6,35 @@ N=20
 if [ -d "res_N20" ]; then rm -r res_N${N}; fi
 
 
-p=
+p=10
 make clean
 make
 mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
 mv res_N${N} res_N${N}_P${p}
 mkdir res_N${N}_P${p}/animations
 
-p=20
+p=50
 make clean
 make
 mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
 mv res_N${N} res_N${N}_P${p}
 mkdir res_N${N}_P${p}/animations
 
-p=4
+p=250
+make clean
+make
+mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
+mv res_N${N} res_N${N}_P${p}
+mkdir res_N${N}_P${p}/animations
+
+p=1500
+make clean
+make
+mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
+mv res_N${N} res_N${N}_P${p}
+mkdir res_N${N}_P${p}/animations
+
+p=6000
 make clean
 make
 mpirun -use-hwthread-cpus ./bifurcation3d 20 ${p}
