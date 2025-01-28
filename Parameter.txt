@@ -2,7 +2,7 @@ Parameter collection for simulation
 
 
 
-nice result but to short:
+nice result but to short: (see res_N18_P4000)
 
 
 const T Re = 14;                    // Reynolds number (50)

@@ -62,14 +62,14 @@ typedef SubgridParticle3D PARTICLETYPE;
 
 const T Re = 14;                    // Reynolds number (50)
 
-int N = 18;                         // resolution of the model (19)
+int N = 20;                         // resolution of the model (19)
 const T radius = 1e-4;              // particles radius (1.5e-3)
 const T partRho = 1e3;              // particles density (998.2)
 
-std::size_t noOfParticles = 4000;   // total number of inserted particles (1000)
+std::size_t noOfParticles = 10;   // total number of inserted particles (1000)
 
-const T fluidMaxPhysT = T( 5 );     // max. fluid simulation time in s, SI unit (5)
-const T particleMaxPhysT = T( 10 ); // max. particle simulation time in s, SI unit (20)
+const T fluidMaxPhysT = T( 10 );     // max. fluid simulation time in s, SI unit (5)
+const T particleMaxPhysT = T( 20 ); // max. particle simulation time in s, SI unit (20)
 
 //Set capture method:
 // materialCapture: based on material number
